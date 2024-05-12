@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 # Circle parameters
-var center := Vector2(400, 300)  # Center of the circle
-var radius = 200  # Radius of the circle
+var center := Vector2(576/2, 324/2)  # Center of the circle
+var radius = 25  # Radius of the circle
 
 # Character parameters
 var angle = PI/2  # Initial angle at the bottom of the circle
