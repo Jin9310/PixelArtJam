@@ -1,41 +1,135 @@
 extends Area2D
 
+#play start animation - drop into the tube - it will be a press of SPACE key
+# have a countdown 3 2 1 GO! with the background of straight animation which needs to be separated from the current straight animation
+#on GO! timer starts and I start to randomly change the animations
+# I will change these in change_piece() func
+# after animation is done, this func is called again
+# I will count all animations and will set the finite number for race
+# once I reach that number, straight animation is set with last 5 loops followed by an end animation - fall into the pool
+# final stats continues and hopefully some online leaderboard
+
 var center := Vector2(576/2, 324/2+5)  # Center of the screen
 @onready var animation_player = $AnimationPlayer
 
+@onready var game: Node = get_node("/root/Game")
+
+var going_straight: bool = true
 var going_left: bool = false
-var goin_right: bool = false
-#var going_straight: bool = true
+var going_right: bool = false
+
+var animation_count: int
+var number_of_straights: int
+var number_of_rights: int
+var number_of_lefts: int
+
+var timer: float
+
+var countdown: int = 4
+var race_start: bool = false
 
 func _physics_process(delta):
 	var position_of_tube = center
 	global_position = position_of_tube
 	
 	if Input.is_action_just_pressed("go_faster"):
-		animation_player.speed_scale += .1
+		animation_player.speed_scale += .02
 	
 	if Input.is_action_just_pressed("go_slower"):
-		animation_player.speed_scale -= .1
+		animation_player.speed_scale -= .02
 	
-	if going_left or goin_right:
+	if going_left or going_right:
 		%CameraAnim.play("shake")
 	else:
 		%CameraAnim.play("idle")
-		
 	
+	timer += delta
+	
+	if animation_count == 50:
+		end_of_run()
+	
+	if Input.is_action_just_pressed("change_anim_1"):
+		go_right_anim()
+		going_left = false
+		going_right = true
+		going_straight = false
+	
+	if Input.is_action_just_pressed("change_anim_2"):
+		go_straight_anim()
+		going_left = false
+		going_right = false
+		going_straight = true
+	
+	if Input.is_action_just_pressed("change_anim_3"):
+		go_left_anim()
+		going_left = true
+		going_right = false
+		going_straight = false
 
-func _on_timer_timeout():
+func end_of_run():
+	print(timer)
+	print("The End")
+
+func go_right_anim():
+	if going_right != true:
+		animation_player.play("build_right")
+		animation_player.queue("right")
+	elif going_right == true:
+		animation_player.play("right")
+	elif going_left == true:
+		animation_player.play("debuild_left")
+		animation_player.queue("build_right")
+		animation_player.queue("right")
+
+func go_straight_anim():
+	if going_right == true:
+		animation_player.play("debuild_right")
+		animation_player.queue("straight")
+	elif going_left == true:
+		animation_player.play("debuild_left")
+		animation_player.queue("straight")
+	else:
+		animation_player.play("straight")
+
+func go_left_anim():
+	if going_left != true:
+		animation_player.play("build_left")
+		animation_player.queue("left")
+	elif going_left == true:
+		animation_player.play("left")
+	elif going_right == true:
+		animation_player.play("debuild_right")
+		animation_player.queue("build_left")
+		animation_player.queue("left")
+
+func change_piece(): #randomly change the animation
 	var random = randi_range(0,2)
+	animation_count += 1
+	#print(animation_count)
 	match random:
 		0:
-			animation_player.play("straight")
+			go_straight_anim()
+			number_of_straights += 1
 			going_left = false
-			goin_right = false
+			going_right = false
 		1:
-			animation_player.play("left")
+			go_left_anim()
+			number_of_lefts += 1
 			going_left = true
-			goin_right = false
+			going_right = false
 		2:
-			animation_player.play("right")
+			go_right_anim()
+			number_of_rights += 1
 			going_left = false
-			goin_right = true
+			going_right = true
+
+func _on_timer_timeout():
+	if countdown > 1:
+		print(countdown - 1 )
+	elif countdown == 1:
+		print("GO!")
+		change_piece()
+		race_start = true
+	else:
+		pass
+	countdown -= 1

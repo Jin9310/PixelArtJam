@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dn4vv12beq3p8"]
+[gd_scene load_steps=17 format=3 uid="uid://dn4vv12beq3p8"]
 
 [ext_resource type="Script" path="res://Scripts/tube.gd" id="1_cxya7"]
 [ext_resource type="Texture2D" uid="uid://cu7hvb167neyt" path="res://Art/SourceFiles/new_slide-Sheet.png" id="2_ro0xt"]
@@ -21,9 +21,9 @@ tracks/0/keys = {
 "values": [0]
 }
 
-[sub_resource type="Animation" id="Animation_jyygu"]
-resource_name = "straight"
-length = 0.3
+[sub_resource type="Animation" id="Animation_lhoj6"]
+resource_name = "left"
+length = 0.9
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -32,16 +32,91 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2]
+"values": [12, 13, 14, 12, 13, 14, 12, 13, 14]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.9),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"change_piece"
+}]
 }
 
-[sub_resource type="Animation" id="Animation_lhoj6"]
-resource_name = "left"
-length = 0.3
+[sub_resource type="Animation" id="Animation_ycf83"]
+resource_name = "right"
+length = 0.9
 loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 3, 4, 5, 3, 4, 5]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.9),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"change_piece"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_jyygu"]
+resource_name = "straight"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"change_piece"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_jcsor"]
+resource_name = "build_right"
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -55,10 +130,25 @@ tracks/0/keys = {
 "values": [6, 7, 8]
 }
 
-[sub_resource type="Animation" id="Animation_ycf83"]
-resource_name = "right"
+[sub_resource type="Animation" id="Animation_cnx37"]
+resource_name = "debuild_right"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [9, 10, 0, 1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_h6bsl"]
+resource_name = "build_left"
 length = 0.3
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -69,20 +159,39 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [3, 4, 5]
+"values": [15, 16, 17]
+}
+
+[sub_resource type="Animation" id="Animation_jlw3x"]
+resource_name = "debuild_left"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [18, 19, 0, 1, 2]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j5myd"]
 _data = {
 "RESET": SubResource("Animation_xg6xv"),
+"build_left": SubResource("Animation_h6bsl"),
+"build_right": SubResource("Animation_jcsor"),
+"debuild_left": SubResource("Animation_jlw3x"),
+"debuild_right": SubResource("Animation_cnx37"),
 "left": SubResource("Animation_lhoj6"),
 "right": SubResource("Animation_ycf83"),
 "straight": SubResource("Animation_jyygu")
 }
 
-[sub_resource type="Animation" id="Animation_52iyd"]
-resource_name = "idle"
-length = 0.1
+[sub_resource type="Animation" id="Animation_vsaal"]
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -96,8 +205,9 @@ tracks/0/keys = {
 "values": [Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_vsaal"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_52iyd"]
+resource_name = "idle"
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -141,7 +251,7 @@ script = ExtResource("1_cxya7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_ro0xt")
-hframes = 9
+hframes = 21
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -154,7 +264,7 @@ libraries = {
 autoplay = "straight"
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
+unique_name_in_owner = true
 autostart = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
