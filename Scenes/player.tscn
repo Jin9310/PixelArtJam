@@ -11,6 +11,7 @@ script = ExtResource("1_c44y1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
+visible = false
 texture = ExtResource("2_lxitd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

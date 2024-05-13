@@ -1,13 +1,16 @@
 extends Area2D
 
-#play start animation - drop into the tube - it will be a press of SPACE key
+# play start animation - drop into the tube - it will be a press of SPACE key
 # have a countdown 3 2 1 GO! with the background of straight animation which needs to be separated from the current straight animation
-#on GO! timer starts and I start to randomly change the animations
+# on GO! timer starts and I start to randomly change the animations
 # I will change these in change_piece() func
 # after animation is done, this func is called again
 # I will count all animations and will set the finite number for race
 # once I reach that number, straight animation is set with last 5 loops followed by an end animation - fall into the pool
 # final stats continues and hopefully some online leaderboard
+
+signal show_feet
+signal race_start
 
 var center := Vector2(576/2, 324/2+5)  # Center of the screen
 @onready var animation_player = $AnimationPlayer
@@ -23,10 +26,7 @@ var number_of_straights: int
 var number_of_rights: int
 var number_of_lefts: int
 
-var timer: float
-
 var countdown: int = 4
-var race_start: bool = false
 
 func _physics_process(delta):
 	var position_of_tube = center
@@ -42,32 +42,14 @@ func _physics_process(delta):
 		%CameraAnim.play("shake")
 	else:
 		%CameraAnim.play("idle")
-	
-	timer += delta
-	
+
 	if animation_count == 50:
 		end_of_run()
 	
-	if Input.is_action_just_pressed("change_anim_1"):
-		go_right_anim()
-		going_left = false
-		going_right = true
-		going_straight = false
-	
-	if Input.is_action_just_pressed("change_anim_2"):
-		go_straight_anim()
-		going_left = false
-		going_right = false
-		going_straight = true
-	
-	if Input.is_action_just_pressed("change_anim_3"):
-		go_left_anim()
-		going_left = true
-		going_right = false
-		going_straight = false
+	if Input.is_action_just_pressed("press_start"): #pressing the SPACE starts the countdown
+		%Timer.start()
 
 func end_of_run():
-	print(timer)
 	print("The End")
 
 func go_right_anim():
@@ -102,10 +84,16 @@ func go_left_anim():
 		animation_player.queue("build_left")
 		animation_player.queue("left")
 
+func go_animation():
+	animation_player.play("go")
+
+func starting_straight_anim():
+	emit_signal("show_feet") #feets needs to be hiden up until this point
+	animation_player.play("start_anim")
+
 func change_piece(): #randomly change the animation
 	var random = randi_range(0,2)
 	animation_count += 1
-	#print(animation_count)
 	match random:
 		0:
 			go_straight_anim()
@@ -125,11 +113,12 @@ func change_piece(): #randomly change the animation
 
 func _on_timer_timeout():
 	if countdown > 1:
-		print(countdown - 1 )
+		Hud.countdown.visible = true
+		Hud.countdown.text = str(countdown - 1)
 	elif countdown == 1:
-		print("GO!")
-		change_piece()
-		race_start = true
+		Hud.countdown.text = "GO!"
+		go_animation()
+		emit_signal("race_start")
 	else:
-		pass
+		Hud.countdown.visible = false
 	countdown -= 1

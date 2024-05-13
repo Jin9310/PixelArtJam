@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@onready var tube: Node = get_node("/root/Game/Tube")
+
 # Circle parameters
 var center := Vector2(576/2, 324/2)  # Center of the circle
 var radius = 25  # Radius of the circle
@@ -9,6 +11,9 @@ var angle = PI/2  # Initial angle at the bottom of the circle
 var angular_speed = 2  # Angular speed of movement
 var min_angle = PI/6  # Minimum angle on the left side (30 degrees)
 var max_angle = 5*PI/6  # Maximum angle on the right side (150 degrees)
+
+func _ready():
+	tube.connect("show_feet", show_feet)
 
 func _physics_process(delta):
 	# Handle player input for movement
@@ -27,3 +32,6 @@ func _physics_process(delta):
 	
 	# Rotate the sprite
 	%Sprite2D.rotation = angle - PI/2  # Adjust rotation to match character's orientation
+
+func show_feet():
+	%Sprite2D.visible = true
