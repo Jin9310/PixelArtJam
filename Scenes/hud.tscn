@@ -54,7 +54,7 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 42
 theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control2/MarginContainer"]
@@ -84,12 +84,38 @@ layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 5
 
-[node name="time_txt" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="Control" type="Control" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control"]
+layout_mode = 0
+offset_top = -28.0
+offset_right = 106.0
+offset_bottom = 12.0
+metadata/_edit_use_anchors_ = true
+
+[node name="minutes" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
-text = "0:00.00s"
+text = "00"
+
+[node name="seconds" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_cv4ba")
+theme_override_font_sizes/font_size = 16
+text = "00"
+
+[node name="milisec" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_cv4ba")
+theme_override_font_sizes/font_size = 16
+text = "00s"
 
 [node name="speed_txt" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true

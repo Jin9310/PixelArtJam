@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dn4vv12beq3p8"]
+[gd_scene load_steps=22 format=3 uid="uid://dn4vv12beq3p8"]
 
 [ext_resource type="Script" path="res://Scripts/tube.gd" id="1_cxya7"]
 [ext_resource type="Texture2D" uid="uid://cu7hvb167neyt" path="res://Art/SourceFiles/new_slide-Sheet.png" id="2_ro0xt"]
@@ -326,6 +326,12 @@ _data = {
 "shake": SubResource("Animation_1k6uq")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1h3uf"]
+size = Vector2(2, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ugq6x"]
+size = Vector2(2, 2)
+
 [node name="Tube" type="Area2D"]
 position = Vector2(0, -20)
 script = ExtResource("1_cxya7")
@@ -358,4 +364,22 @@ libraries = {
 }
 autoplay = "idle"
 
+[node name="speed_up_straight" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(8, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="speed_up_straight"]
+position = Vector2(0, 21)
+shape = SubResource("RectangleShape2D_1h3uf")
+
+[node name="slow_down_position_1" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-8, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_position_1"]
+position = Vector2(0, 21)
+shape = SubResource("RectangleShape2D_ugq6x")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="speed_up_straight" to="." method="_on_speed_up_straight_body_entered"]
+[connection signal="body_entered" from="slow_down_position_1" to="." method="_on_slow_down_position_1_body_entered"]

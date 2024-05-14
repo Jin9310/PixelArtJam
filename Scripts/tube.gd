@@ -11,6 +11,7 @@ extends Area2D
 
 signal show_feet
 signal race_start
+signal stop_time
 
 var center := Vector2(576/2, 324/2+5)  # Center of the screen
 @onready var animation_player = $AnimationPlayer
@@ -28,15 +29,16 @@ var number_of_lefts: int
 
 var countdown: int = 4
 
+#speed handling
+var speed: float
+var speed_base: float = 15
+
+func _ready():
+	speed = speed_base
+
 func _physics_process(delta):
 	var position_of_tube = center
 	global_position = position_of_tube
-	
-	if Input.is_action_just_pressed("go_faster"):
-		animation_player.speed_scale += .02
-	
-	if Input.is_action_just_pressed("go_slower"):
-		animation_player.speed_scale -= .02
 	
 	if going_left or going_right:
 		%CameraAnim.play("shake")
@@ -48,8 +50,36 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("press_start"): #pressing the SPACE starts the countdown
 		%Timer.start()
+	
+	
+	#delete this later, just a preparation for slow down and speed up functionality
+	if Input.is_action_just_pressed("change_anim_1"):
+		%speed_up_straight.monitoring = !%speed_up_straight.monitoring
+	
+	if Input.is_action_just_pressed("change_anim_2"):
+		%slow_down_position_1.monitoring = !%slow_down_position_1.monitoring
+	
+	if Input.is_action_just_pressed("go_faster"):
+		animation_player.speed_scale += .02
+		raise_the_speed()
+	
+	if Input.is_action_just_pressed("go_slower"):
+		animation_player.speed_scale -= .02
+		lower_the_speed()
+	
+
+func raise_the_speed():
+	animation_player.speed_scale += .02
+	speed += .2
+	Hud.speed_txt.text = str(speed) + " km/h"
+
+func lower_the_speed():
+	animation_player.speed_scale -= .02
+	speed -= .4
+	Hud.speed_txt.text = str(speed) + " km/h"
 
 func end_of_run():
+	emit_signal("stop_time")
 	print("The End")
 
 func go_right_anim():
@@ -122,3 +152,15 @@ func _on_timer_timeout():
 	else:
 		Hud.countdown.visible = false
 	countdown -= 1
+
+
+func _on_speed_up_straight_body_entered(body):
+	print("speed up")
+	raise_the_speed()
+	print(animation_player.speed_scale)
+
+
+func _on_slow_down_position_1_body_entered(body):
+	print("slow down")
+	lower_the_speed()
+	print(animation_player.speed_scale)
