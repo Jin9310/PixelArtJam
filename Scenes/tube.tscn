@@ -364,22 +364,56 @@ libraries = {
 }
 autoplay = "idle"
 
+[node name="speed_zone_straight" type="Node" parent="."]
+
 [node name="speed_up_straight" type="Area2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(8, 0)
+position = Vector2(0, 22)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="speed_up_straight"]
-position = Vector2(0, 21)
 shape = SubResource("RectangleShape2D_1h3uf")
 
-[node name="slow_down_position_1" type="Area2D" parent="."]
+[node name="slow_down_straight_2" type="Area2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-8, 0)
+position = Vector2(13, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_position_1"]
-position = Vector2(0, 21)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_straight_2"]
 shape = SubResource("RectangleShape2D_ugq6x")
+
+[node name="slow_down_straight_1" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-12, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_straight_1"]
+shape = SubResource("RectangleShape2D_ugq6x")
+
+[node name="speed_zone_left_1" type="Node" parent="."]
+
+[node name="speed_up_left_1" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-12, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="speed_up_left_1"]
+shape = SubResource("RectangleShape2D_1h3uf")
+
+[node name="slow_down_left_1" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 22)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_left_1"]
+shape = SubResource("RectangleShape2D_1h3uf")
+
+[node name="slow_down_left_2" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(13, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_left_2"]
+shape = SubResource("RectangleShape2D_1h3uf")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="speed_up_straight" to="." method="_on_speed_up_straight_body_entered"]
-[connection signal="body_entered" from="slow_down_position_1" to="." method="_on_slow_down_position_1_body_entered"]
+[connection signal="body_entered" from="slow_down_straight_2" to="." method="_on_slow_down_straight_2_body_entered"]
+[connection signal="body_entered" from="slow_down_straight_1" to="." method="_on_slow_down_straight_1_body_entered"]
+[connection signal="body_entered" from="speed_up_left_1" to="." method="_on_speed_up_left_1_body_entered"]
+[connection signal="body_entered" from="slow_down_left_1" to="." method="_on_slow_down_left_1_body_entered"]
+[connection signal="body_entered" from="slow_down_left_2" to="." method="_on_slow_down_left_2_body_entered"]

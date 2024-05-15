@@ -16,6 +16,7 @@ var min_angle = PI/6  # Minimum angle on the left side (30 degrees)
 var max_angle = 5*PI/6  # Maximum angle on the right side (150 degrees)
 
 var initial_angle
+var ang_auto_speed: float = 1.2
 
 func _ready():
 	tube.connect("show_feet", show_feet)
@@ -36,12 +37,22 @@ func _physics_process(delta):
 	# Update character's position
 	global_position = position_on_circle
 	
-	if angle > initial_angle:
+	if angle > (initial_angle + 0.1):
 		on_left_side = true
 		on_right_side = false
-	if angle < initial_angle:
+	elif angle < (initial_angle - 0.1):
 		on_left_side = false
 		on_right_side = true
+	else:
+		on_left_side = false
+		on_right_side = false
+	
+	if on_left_side:
+		angle -= ang_auto_speed * delta
+	elif on_right_side:
+		angle += ang_auto_speed * delta
+	else:
+		pass
 	
 	# Rotate the sprite
 	%Sprite2D.rotation = angle - PI/2  # Adjust rotation to match character's orientation

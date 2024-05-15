@@ -35,6 +35,7 @@ var speed_base: float = 15
 
 func _ready():
 	speed = speed_base
+	right_zone_speed_1()
 
 func _physics_process(delta):
 	var position_of_tube = center
@@ -56,9 +57,6 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("change_anim_1"):
 		%speed_up_straight.monitoring = !%speed_up_straight.monitoring
 	
-	if Input.is_action_just_pressed("change_anim_2"):
-		%slow_down_position_1.monitoring = !%slow_down_position_1.monitoring
-	
 	if Input.is_action_just_pressed("go_faster"):
 		animation_player.speed_scale += .02
 		raise_the_speed()
@@ -74,8 +72,8 @@ func raise_the_speed():
 	Hud.speed_txt.text = str(speed) + " km/h"
 
 func lower_the_speed():
-	animation_player.speed_scale -= .02
-	speed -= .4
+	animation_player.speed_scale -= .01
+	speed -= .1
 	Hud.speed_txt.text = str(speed) + " km/h"
 
 func end_of_run():
@@ -126,20 +124,26 @@ func change_piece(): #randomly change the animation
 	animation_count += 1
 	match random:
 		0:
+			straight_zone_speed()
 			go_straight_anim()
 			number_of_straights += 1
 			going_left = false
 			going_right = false
+			
 		1:
+			left_zone_speed_1()
 			go_left_anim()
 			number_of_lefts += 1
 			going_left = true
 			going_right = false
+			
 		2:
+			right_zone_speed_1()
 			go_right_anim()
 			number_of_rights += 1
 			going_left = false
 			going_right = true
+			
 
 func _on_timer_timeout():
 	if countdown > 1:
@@ -155,12 +159,51 @@ func _on_timer_timeout():
 
 
 func _on_speed_up_straight_body_entered(body):
-	print("speed up")
+	print("up")
 	raise_the_speed()
-	print(animation_player.speed_scale)
 
-
-func _on_slow_down_position_1_body_entered(body):
-	print("slow down")
+func _on_slow_down_straight_1_body_entered(body):
 	lower_the_speed()
-	print(animation_player.speed_scale)
+
+func _on_slow_down_straight_2_body_entered(body):
+	lower_the_speed()
+
+
+func straight_zone_speed(): #turn on speed and slow zones for straight tube
+	print("straight zone activated")
+	%speed_up_straight.monitoring = true
+	%slow_down_straight_1.monitoring = true
+	%slow_down_straight_2.monitoring = true
+	
+	%speed_up_left_1.monitoring = false
+	%slow_down_left_1.monitoring = false
+	%slow_down_left_2.monitoring = false
+
+func left_zone_speed_1():
+	print("left zone activated")
+	%speed_up_straight.monitoring = false
+	%slow_down_straight_1.monitoring = false
+	%slow_down_straight_2.monitoring = false
+	
+	%speed_up_left_1.monitoring = true
+	%slow_down_left_1.monitoring = true
+	%slow_down_left_2.monitoring = true
+
+func right_zone_speed_1():
+	%speed_up_straight.monitoring = false
+	%slow_down_straight_1.monitoring = false
+	%slow_down_straight_2.monitoring = false
+	
+	%speed_up_left_1.monitoring = false
+	%slow_down_left_1.monitoring = false
+	%slow_down_left_2.monitoring = false
+
+func _on_speed_up_left_1_body_entered(body):
+	print("up")
+	raise_the_speed()
+
+func _on_slow_down_left_1_body_entered(body):
+	lower_the_speed()
+
+func _on_slow_down_left_2_body_entered(body):
+	raise_the_speed()
