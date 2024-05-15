@@ -410,6 +410,29 @@ position = Vector2(13, 16)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_left_2"]
 shape = SubResource("RectangleShape2D_1h3uf")
 
+[node name="speed_zone_right_1" type="Node" parent="."]
+
+[node name="speed_up_right_1" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(13, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="speed_up_right_1"]
+shape = SubResource("RectangleShape2D_1h3uf")
+
+[node name="slow_down_right_1" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 22)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_right_1"]
+shape = SubResource("RectangleShape2D_1h3uf")
+
+[node name="slow_down_right_2" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-12, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slow_down_right_2"]
+shape = SubResource("RectangleShape2D_1h3uf")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="speed_up_straight" to="." method="_on_speed_up_straight_body_entered"]
 [connection signal="body_entered" from="slow_down_straight_2" to="." method="_on_slow_down_straight_2_body_entered"]
@@ -417,3 +440,6 @@ shape = SubResource("RectangleShape2D_1h3uf")
 [connection signal="body_entered" from="speed_up_left_1" to="." method="_on_speed_up_left_1_body_entered"]
 [connection signal="body_entered" from="slow_down_left_1" to="." method="_on_slow_down_left_1_body_entered"]
 [connection signal="body_entered" from="slow_down_left_2" to="." method="_on_slow_down_left_2_body_entered"]
+[connection signal="body_entered" from="speed_up_right_1" to="." method="_on_speed_up_right_1_body_entered"]
+[connection signal="body_entered" from="slow_down_right_1" to="." method="_on_slow_down_right_1_body_entered"]
+[connection signal="body_entered" from="slow_down_right_2" to="." method="_on_slow_down_right_2_body_entered"]

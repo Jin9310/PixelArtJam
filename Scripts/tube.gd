@@ -37,6 +37,7 @@ func _ready():
 	speed = speed_base
 	right_zone_speed_1()
 
+
 func _physics_process(delta):
 	var position_of_tube = center
 	global_position = position_of_tube
@@ -46,29 +47,16 @@ func _physics_process(delta):
 	else:
 		%CameraAnim.play("idle")
 
-	if animation_count == 50:
+	if animation_count == 50: #condition for end of the game
 		end_of_run()
 	
 	if Input.is_action_just_pressed("press_start"): #pressing the SPACE starts the countdown
 		%Timer.start()
 	
-	
-	#delete this later, just a preparation for slow down and speed up functionality
-	if Input.is_action_just_pressed("change_anim_1"):
-		%speed_up_straight.monitoring = !%speed_up_straight.monitoring
-	
-	if Input.is_action_just_pressed("go_faster"):
-		animation_player.speed_scale += .02
-		raise_the_speed()
-	
-	if Input.is_action_just_pressed("go_slower"):
-		animation_player.speed_scale -= .02
-		lower_the_speed()
-	
 
 func raise_the_speed():
-	animation_player.speed_scale += .02
-	speed += .2
+	animation_player.speed_scale += .025
+	speed += .3
 	Hud.speed_txt.text = str(speed) + " km/h"
 
 func lower_the_speed():
@@ -112,7 +100,7 @@ func go_left_anim():
 		animation_player.queue("build_left")
 		animation_player.queue("left")
 
-func go_animation():
+func go_animation(): #entry animation followed by script change_piece()
 	animation_player.play("go")
 
 func starting_straight_anim():
@@ -124,7 +112,7 @@ func change_piece(): #randomly change the animation
 	animation_count += 1
 	match random:
 		0:
-			straight_zone_speed()
+			straight_zone_speed() #enable Area2Ds that handle speed detection
 			go_straight_anim()
 			number_of_straights += 1
 			going_left = false
@@ -157,20 +145,7 @@ func _on_timer_timeout():
 		Hud.countdown.visible = false
 	countdown -= 1
 
-
-func _on_speed_up_straight_body_entered(body):
-	print("up")
-	raise_the_speed()
-
-func _on_slow_down_straight_1_body_entered(body):
-	lower_the_speed()
-
-func _on_slow_down_straight_2_body_entered(body):
-	lower_the_speed()
-
-
 func straight_zone_speed(): #turn on speed and slow zones for straight tube
-	print("straight zone activated")
 	%speed_up_straight.monitoring = true
 	%slow_down_straight_1.monitoring = true
 	%slow_down_straight_2.monitoring = true
@@ -178,9 +153,12 @@ func straight_zone_speed(): #turn on speed and slow zones for straight tube
 	%speed_up_left_1.monitoring = false
 	%slow_down_left_1.monitoring = false
 	%slow_down_left_2.monitoring = false
+	
+	%speed_up_right_1.monitoring = false
+	%slow_down_right_1.monitoring = false
+	%slow_down_right_2.monitoring = false
 
 func left_zone_speed_1():
-	print("left zone activated")
 	%speed_up_straight.monitoring = false
 	%slow_down_straight_1.monitoring = false
 	%slow_down_straight_2.monitoring = false
@@ -188,6 +166,10 @@ func left_zone_speed_1():
 	%speed_up_left_1.monitoring = true
 	%slow_down_left_1.monitoring = true
 	%slow_down_left_2.monitoring = true
+	
+	%speed_up_right_1.monitoring = false
+	%slow_down_right_1.monitoring = false
+	%slow_down_right_2.monitoring = false
 
 func right_zone_speed_1():
 	%speed_up_straight.monitoring = false
@@ -197,13 +179,40 @@ func right_zone_speed_1():
 	%speed_up_left_1.monitoring = false
 	%slow_down_left_1.monitoring = false
 	%slow_down_left_2.monitoring = false
+	
+	%speed_up_right_1.monitoring = true
+	%slow_down_right_1.monitoring = true
+	%slow_down_right_2.monitoring = true
 
+### ZONES which when hit, slows down or speed up the movement ###
+## straight zone
+func _on_speed_up_straight_body_entered(body):
+	raise_the_speed()
+
+func _on_slow_down_straight_1_body_entered(body):
+	lower_the_speed()
+
+func _on_slow_down_straight_2_body_entered(body):
+	lower_the_speed()
+
+
+## left side
 func _on_speed_up_left_1_body_entered(body):
-	print("up")
 	raise_the_speed()
 
 func _on_slow_down_left_1_body_entered(body):
 	lower_the_speed()
 
 func _on_slow_down_left_2_body_entered(body):
+	lower_the_speed()
+
+
+##right side
+func _on_speed_up_right_1_body_entered(body):
 	raise_the_speed()
+
+func _on_slow_down_right_1_body_entered(body):
+	lower_the_speed()
+
+func _on_slow_down_right_2_body_entered(body):
+	lower_the_speed()
