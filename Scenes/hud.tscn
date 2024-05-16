@@ -6,7 +6,7 @@
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_nfrbp")
 
-[node name="Control" type="Control" parent="."]
+[node name="countDown" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="countdown" type="Label" parent="Control"]
+[node name="countdown" type="Label" parent="countDown"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -35,7 +35,8 @@ text = "GO!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control2" type="Control" parent="."]
+[node name="timers" type="Control" parent="."]
+unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,7 +44,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Control2"]
+[node name="MarginContainer" type="MarginContainer" parent="timers"]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -57,69 +58,109 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 42
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control2/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="timers/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control2/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="timers/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/separation = 5
 
-[node name="time_lbl" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="time_lbl" type="Label" parent="timers/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
 text = "Time:"
 
-[node name="speed_lbl" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="speed_lbl" type="Label" parent="timers/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
 text = "Speed :"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Control2/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="timers/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 5
 
-[node name="Control" type="Control" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="Control" type="Control" parent="timers/MarginContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control"]
+[node name="HBoxContainer" type="HBoxContainer" parent="timers/MarginContainer/HBoxContainer/VBoxContainer2/Control"]
 layout_mode = 0
 offset_top = -28.0
 offset_right = 106.0
 offset_bottom = 12.0
 metadata/_edit_use_anchors_ = true
 
-[node name="minutes" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
+[node name="minutes" type="Label" parent="timers/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
 text = "00"
 
-[node name="seconds" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
+[node name="seconds" type="Label" parent="timers/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
 text = "00"
 
-[node name="milisec" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
+[node name="milisec" type="Label" parent="timers/MarginContainer/HBoxContainer/VBoxContainer2/Control/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
 text = "00s"
 
-[node name="speed_txt" type="Label" parent="Control2/MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="speed_txt" type="Label" parent="timers/MarginContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
-text = "15 km/h"
+text = "0 km/h"
+
+[node name="end_game_stats" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="end_game_stats"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="end_game_stats/MarginContainer"]
+layout_mode = 2
+
+[node name="final_time" type="Label" parent="end_game_stats/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_cv4ba")
+text = "Time: 00 00 00s"
+
+[node name="play_again_btn" type="Button" parent="end_game_stats/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_cv4ba")
+text = "Play again"
+
+[connection signal="pressed" from="end_game_stats/MarginContainer/VBoxContainer/play_again_btn" to="." method="_on_play_again_btn_pressed"]

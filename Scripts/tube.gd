@@ -12,11 +12,13 @@ extends Area2D
 signal show_feet
 signal race_start
 signal stop_time
+signal final_score
 
 var center := Vector2(576/2, 324/2+5)  # Center of the screen
 @onready var animation_player = $AnimationPlayer
 
 @onready var game: Node = get_node("/root/Game")
+@onready var hud: Node = get_node("/root/Hud")
 
 var going_straight: bool = true
 var going_left: bool = false
@@ -33,10 +35,13 @@ var countdown: int = 4
 var speed: float
 var speed_base: float = 15
 
-func _ready():
-	speed = speed_base
-	right_zone_speed_1()
+var run_ended: bool = false
 
+func _ready():
+	Hud.speed_txt.text = "0 km/h"
+	hud.connect("reset_game", reset_game)
+	speed = speed_base
+	#right_zone_speed_1()
 
 func _physics_process(delta):
 	var position_of_tube = center
@@ -47,12 +52,13 @@ func _physics_process(delta):
 	else:
 		%CameraAnim.play("idle")
 
-	if animation_count == 50: #condition for end of the game
+	if animation_count == 10: #condition for end of the game
 		end_of_run()
 	
 	if Input.is_action_just_pressed("press_start"): #pressing the SPACE starts the countdown
+		countdown = 4
 		%Timer.start()
-	
+
 
 func raise_the_speed():
 	animation_player.speed_scale += .025
@@ -66,7 +72,7 @@ func lower_the_speed():
 
 func end_of_run():
 	emit_signal("stop_time")
-	print("The End")
+	run_ended = true
 
 func go_right_anim():
 	if going_right != true:
@@ -100,6 +106,13 @@ func go_left_anim():
 		animation_player.queue("build_left")
 		animation_player.queue("left")
 
+func finish_sequence():
+	emit_signal("show_feet")
+	going_left = false
+	going_right = false
+	animation_player.play("end_line")
+	animation_player.play("end_animation")
+
 func go_animation(): #entry animation followed by script change_piece()
 	animation_player.play("go")
 
@@ -108,30 +121,32 @@ func starting_straight_anim():
 	animation_player.play("start_anim")
 
 func change_piece(): #randomly change the animation
-	var random = randi_range(0,2)
-	animation_count += 1
-	match random:
-		0:
-			straight_zone_speed() #enable Area2Ds that handle speed detection
-			go_straight_anim()
-			number_of_straights += 1
-			going_left = false
-			going_right = false
+	if run_ended != true:
+		var random = randi_range(0,2)
+		animation_count += 1
+		match random:
+			0:
+				straight_zone_speed() #enable Area2Ds that handle speed detection
+				go_straight_anim()
+				number_of_straights += 1
+				going_left = false
+				going_right = false
 			
-		1:
-			left_zone_speed_1()
-			go_left_anim()
-			number_of_lefts += 1
-			going_left = true
-			going_right = false
+			1:
+				left_zone_speed_1()
+				go_left_anim()
+				number_of_lefts += 1
+				going_left = true
+				going_right = false
 			
-		2:
-			right_zone_speed_1()
-			go_right_anim()
-			number_of_rights += 1
-			going_left = false
-			going_right = true
-			
+			2:
+				right_zone_speed_1()
+				go_right_anim()
+				number_of_rights += 1
+				going_left = false
+				going_right = true
+	else:
+		finish_sequence()
 
 func _on_timer_timeout():
 	if countdown > 1:
@@ -144,6 +159,22 @@ func _on_timer_timeout():
 	else:
 		Hud.countdown.visible = false
 	countdown -= 1
+
+func show_score():
+	emit_signal("final_score")
+
+func reset_game(): #all the default states
+	%Timer.stop()
+	countdown = 4
+	animation_player.play("waiting")
+	run_ended = false
+	animation_count = 0
+	number_of_rights = 0
+	number_of_lefts = 0
+	number_of_straights = 0
+	speed = speed_base
+	Hud.speed_txt.text = "00 km/h"
+	
 
 func straight_zone_speed(): #turn on speed and slow zones for straight tube
 	%speed_up_straight.monitoring = true
@@ -194,7 +225,6 @@ func _on_slow_down_straight_1_body_entered(body):
 
 func _on_slow_down_straight_2_body_entered(body):
 	lower_the_speed()
-
 
 ## left side
 func _on_speed_up_left_1_body_entered(body):

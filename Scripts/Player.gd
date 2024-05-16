@@ -58,4 +58,4 @@ func _physics_process(delta):
 	%Sprite2D.rotation = angle - PI/2  # Adjust rotation to match character's orientation
 
 func show_feet():
-	%Sprite2D.visible = true
+	%Sprite2D.visible = !%Sprite2D.visible
