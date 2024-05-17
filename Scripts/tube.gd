@@ -39,8 +39,10 @@ var run_ended: bool = false
 
 
 func _ready():
+	%Camera2D.zoom = Vector2(1,1)
 	Hud.speed_txt.text = "0 km/h"
 	hud.connect("reset_game", reset_game)
+	hud.connect("zoom_camera", zoom_camera)
 	speed = speed_base
 	#right_zone_speed_1()
 
@@ -165,6 +167,9 @@ func _on_timer_timeout():
 
 func show_score():
 	emit_signal("final_score")
+
+func zoom_camera():
+	%Camera2D.zoom = Vector2(4,4)
 
 func reset_game(): #all the default states
 	%Timer.stop()
