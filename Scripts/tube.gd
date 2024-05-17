@@ -110,6 +110,7 @@ func finish_sequence():
 	emit_signal("show_feet")
 	going_left = false
 	going_right = false
+	animation_player.speed_scale = 1
 	animation_player.play("end_line")
 	animation_player.play("end_animation")
 
