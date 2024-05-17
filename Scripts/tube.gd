@@ -37,6 +37,7 @@ var speed_base: float = 15
 
 var run_ended: bool = false
 
+
 func _ready():
 	Hud.speed_txt.text = "0 km/h"
 	hud.connect("reset_game", reset_game)
@@ -55,8 +56,9 @@ func _physics_process(delta):
 	if animation_count == 10: #condition for end of the game
 		end_of_run()
 	
-	if Input.is_action_just_pressed("press_start"): #pressing the SPACE starts the countdown
+	if Input.is_action_just_pressed("press_start") && Hud.in_game == true && Hud.game_started != true: #pressing the SPACE starts the countdown
 		countdown = 4
+		Hud.game_started = true
 		%Timer.start()
 
 
@@ -175,6 +177,7 @@ func reset_game(): #all the default states
 	number_of_straights = 0
 	speed = speed_base
 	Hud.speed_txt.text = "00 km/h"
+	Hud.game_started = false
 	
 
 func straight_zone_speed(): #turn on speed and slow zones for straight tube

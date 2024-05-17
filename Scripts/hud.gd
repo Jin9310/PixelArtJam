@@ -5,6 +5,8 @@ signal reset_game
 @onready var speed_txt = %speed_txt
 @onready var countdown = %countdown
 @onready var tube: Node = get_node("/root/Game/Tube")
+@onready var player: Node = get_node("/root/Game/Player")
+@onready var entry_scene: Node = get_node("/root/Game/entry_scene")
 
 var race_has_started: bool = false
 
@@ -15,10 +17,17 @@ var msec: int = 0
 
 var time_of_the_lap: float = 0
 
+var in_game: bool = false # means that player is in game screen waiting for start
+var game_started: bool = false # means that the SPACE has been pressed and game started
+
 func _ready():
 	tube.connect("race_start", race_start)
 	tube.connect("stop_time", stop)
 	tube.connect("final_score", final_score)
+	
+	tube.visible = false
+	player.visible = false
+	entry_scene.visible = true
 
 func _process(delta):
 	if race_has_started:
@@ -29,6 +38,9 @@ func _process(delta):
 		%minutes.text = "%02d:" % minutes
 		%seconds.text = "%02d." % seconds
 		%milisec.text = "%03d" % msec
+	
+	if Input.is_action_just_pressed("press_start"):
+		scene_switch()
 
 func race_start():
 	race_has_started = true
@@ -56,3 +68,9 @@ func final_score():
 	%timers.visible = false
 	%end_game_stats.visible = true
 	%final_time.text = "%02d:" % minutes + "%02d." % seconds + "%03d" % msec
+
+func scene_switch():
+	tube.visible = true
+	player.visible = true
+	entry_scene.visible = false
+	in_game = true

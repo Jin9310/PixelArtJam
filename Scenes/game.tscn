@@ -1,14 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpemyiy6wsitj"]
+[gd_scene load_steps=5 format=3 uid="uid://cpemyiy6wsitj"]
 
 [ext_resource type="PackedScene" uid="uid://dn4vv12beq3p8" path="res://Scenes/tube.tscn" id="1_gvddc"]
 [ext_resource type="Script" path="res://Scenes/game.gd" id="1_nx7pc"]
 [ext_resource type="PackedScene" uid="uid://dnc7edpsobgrf" path="res://Scenes/player.tscn" id="2_4jci1"]
+[ext_resource type="PackedScene" uid="uid://dgd600x36pxcf" path="res://Scenes/entry_scene.tscn" id="2_cy73l"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_nx7pc")
 
+[node name="entry_scene" parent="." instance=ExtResource("2_cy73l")]
+unique_name_in_owner = true
+offset_left = 294.0
+offset_top = 155.0
+offset_right = 294.0
+offset_bottom = 155.0
+
 [node name="Tube" parent="." instance=ExtResource("1_gvddc")]
+unique_name_in_owner = true
 position = Vector2(288, 162)
 
 [node name="Player" parent="." instance=ExtResource("2_4jci1")]
+unique_name_in_owner = true
 position = Vector2(288, 162)
