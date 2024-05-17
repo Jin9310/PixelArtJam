@@ -7,7 +7,8 @@ signal zoom_camera
 @onready var countdown = %countdown
 @onready var tube: Node = get_node("/root/Game/Tube")
 @onready var player: Node = get_node("/root/Game/Player")
-@onready var entry_scene: Node = get_node("/root/Game/entry_scene")
+@onready var main_menu: Node = get_node("/root/Game/Canvas/MainMenu")
+
 
 var race_has_started: bool = false
 
@@ -28,7 +29,6 @@ func _ready():
 	
 	tube.visible = false
 	player.visible = false
-	entry_scene.visible = true
 	
 	%timers.visible = false
 	%end_game_stats.visible = false
@@ -77,7 +77,7 @@ func final_score(): # show final score
 func scene_switch(): #switching scene to game
 	tube.visible = true
 	player.visible = true
-	entry_scene.visible = false
+	main_menu.visible = false
 	in_game = true
 	emit_signal("zoom_camera")
 	%timers.visible = true
