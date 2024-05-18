@@ -1,10 +1,52 @@
-[gd_scene load_steps=6 format=3 uid="uid://cpemyiy6wsitj"]
+[gd_scene load_steps=13 format=3 uid="uid://cpemyiy6wsitj"]
 
 [ext_resource type="PackedScene" uid="uid://dn4vv12beq3p8" path="res://Scenes/tube.tscn" id="1_gvddc"]
 [ext_resource type="Script" path="res://Scenes/game.gd" id="1_nx7pc"]
+[ext_resource type="Texture2D" uid="uid://rayvig130br" path="res://Art/moving_main_scene.png" id="2_2ab3h"]
 [ext_resource type="PackedScene" uid="uid://dnc7edpsobgrf" path="res://Scenes/player.tscn" id="2_4jci1"]
 [ext_resource type="Texture2D" uid="uid://m0prpunnc7ts" path="res://Art/main_scene.png" id="2_6lh88"]
 [ext_resource type="FontFile" uid="uid://c18lhfwxil1yk" path="res://fonts/PixelOperator8.ttf" id="3_nhpjg"]
+[ext_resource type="Texture2D" uid="uid://o0ovihxd8giw" path="res://Art/main_scene-Sheet.png" id="3_oyhds"]
+[ext_resource type="Texture2D" uid="uid://bo4v257fu2ba3" path="res://Art/tube_name.png" id="4_tfkl3"]
+[ext_resource type="Texture2D" uid="uid://d4mihq0dnpm4j" path="res://Art/runners_name.png" id="5_4sgi4"]
+
+[sub_resource type="Animation" id="Animation_88olv"]
+resource_name = "idle"
+length = 1.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+}
+
+[sub_resource type="Animation" id="Animation_y4rkt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tiq8m"]
+_data = {
+"RESET": SubResource("Animation_y4rkt"),
+"idle": SubResource("Animation_88olv")
+}
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_nx7pc")
@@ -30,7 +72,49 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.921569, 0.929412, 0.913725, 1)
 
+[node name="moving_main_01" type="TextureRect" parent="Canvas/MainMenu"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -148.0
+offset_right = 195.0
+offset_bottom = 148.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(205, 143)
+texture = ExtResource("2_2ab3h")
+
+[node name="moving_main_02" type="TextureRect" parent="Canvas/MainMenu"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -148.0
+offset_right = 195.0
+offset_bottom = 148.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(205, 143)
+texture = ExtResource("2_2ab3h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Canvas/MainMenu"]
+position = Vector2(288, 162)
+texture = ExtResource("3_oyhds")
+hframes = 16
+
 [node name="picture" type="TextureRect" parent="Canvas/MainMenu"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -67,6 +151,30 @@ text = "- press start [SPACE] button -"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="name_tube" type="TextureRect" parent="Canvas/MainMenu"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 577.0
+offset_top = 217.0
+offset_right = 762.0
+offset_bottom = 274.0
+texture = ExtResource("4_tfkl3")
+
+[node name="name_runners" type="TextureRect" parent="Canvas/MainMenu"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 577.0
+offset_top = 217.0
+offset_right = 762.0
+offset_bottom = 274.0
+texture = ExtResource("5_4sgi4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Canvas/MainMenu"]
+libraries = {
+"": SubResource("AnimationLibrary_tiq8m")
+}
+autoplay = "idle"
+
 [node name="Tube" parent="." instance=ExtResource("1_gvddc")]
 unique_name_in_owner = true
 z_index = 5
@@ -76,3 +184,15 @@ position = Vector2(288, 162)
 unique_name_in_owner = true
 z_index = 5
 position = Vector2(288, 162)
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+autostart = true
+
+[node name="Timer2" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

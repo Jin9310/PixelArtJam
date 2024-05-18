@@ -44,7 +44,7 @@ func _process(delta):
 		%milisec.text = "%03d" % msec
 	
 	if Input.is_action_just_pressed("press_start"):
-		scene_switch()
+		%HudTimer.start()
 
 #start / stop the race
 func race_start():
@@ -83,3 +83,6 @@ func scene_switch(): #switching scene to game
 	%timers.visible = true
 	
 
+func _on_hud_timer_timeout():
+	scene_switch()
+	%HudTimer.stop()

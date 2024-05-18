@@ -9,6 +9,13 @@ extends Area2D
 # once I reach that number, straight animation is set with last 5 loops followed by an end animation - fall into the pool
 # final stats continues and hopefully some online leaderboard
 
+@onready var texture_rect = %TextureRect
+var end_y_position_of_texture: float = -362
+var end_x_position_of_texture: float = -213
+var start_y_position_of_texture: float = -109
+
+
+
 signal show_feet
 signal race_start
 signal stop_time
@@ -29,6 +36,9 @@ var number_of_straights: int
 var number_of_rights: int
 var number_of_lefts: int
 
+var track_lenght: int = 30
+var bg_vert_move: float
+
 var countdown: int = 4
 
 #speed handling
@@ -37,8 +47,14 @@ var speed_base: float = 15
 
 var run_ended: bool = false
 
+func vertical_movement_of_bg():
+	bg_vert_move = end_y_position_of_texture / track_lenght
+	print(bg_vert_move)
 
 func _ready():
+	texture_rect.position.y = start_y_position_of_texture
+	texture_rect.position.x = end_x_position_of_texture
+	vertical_movement_of_bg()
 	%Camera2D.zoom = Vector2(1,1)
 	Hud.speed_txt.text = "0 km/h"
 	hud.connect("reset_game", reset_game)
@@ -55,7 +71,7 @@ func _physics_process(delta):
 	else:
 		%CameraAnim.play("idle")
 
-	if animation_count == 10: #condition for end of the game
+	if animation_count == track_lenght: #condition for end of the game
 		end_of_run()
 	
 	if Input.is_action_just_pressed("press_start") && Hud.in_game == true && Hud.game_started != true: #pressing the SPACE starts the countdown
@@ -129,6 +145,10 @@ func change_piece(): #randomly change the animation
 	if run_ended != true:
 		var random = randi_range(0,2)
 		animation_count += 1
+		if texture_rect.position.y >= (end_y_position_of_texture + 4):
+			texture_rect.position.y += bg_vert_move #move the background downwards as you progress 
+		else:
+			texture_rect.position.y = end_y_position_of_texture
 		match random:
 			0:
 				straight_zone_speed() #enable Area2Ds that handle speed detection
@@ -156,8 +176,10 @@ func change_piece(): #randomly change the animation
 func _on_timer_timeout():
 	if countdown > 1:
 		Hud.countdown.visible = true
+		scale_text()
 		Hud.countdown.text = str(countdown - 1)
 	elif countdown == 1:
+		scale_text()
 		Hud.countdown.text = "GO!"
 		go_animation()
 		emit_signal("race_start")
@@ -165,11 +187,16 @@ func _on_timer_timeout():
 		Hud.countdown.visible = false
 	countdown -= 1
 
+func scale_text():
+	var tween = get_tree().create_tween().set_loops()
+	tween.tween_property(Hud.countdown, "scale", Vector2(1.5,1.5), 1)
+	tween.tween_property(Hud.countdown, "scale", Vector2(1,1), .001)
+
 func show_score():
 	emit_signal("final_score")
 
 func zoom_camera():
-	%Camera2D.zoom = Vector2(4,4)
+	%Camera2D.zoom = Vector2(2,2)
 
 func reset_game(): #all the default states
 	%Timer.stop()
@@ -183,6 +210,7 @@ func reset_game(): #all the default states
 	speed = speed_base
 	Hud.speed_txt.text = "00 km/h"
 	Hud.game_started = false
+	texture_rect.position.y = start_y_position_of_texture
 	
 
 func straight_zone_speed(): #turn on speed and slow zones for straight tube
