@@ -9,6 +9,9 @@ extends Area2D
 # once I reach that number, straight animation is set with last 5 loops followed by an end animation - fall into the pool
 # final stats continues and hopefully some online leaderboard
 
+@onready var swimmer = %swimmer
+
+@onready var sprite_2d = $Sprite2D
 @onready var texture_rect = %TextureRect
 var end_y_position_of_texture: float = -362
 var end_x_position_of_texture: float = -213
@@ -36,7 +39,7 @@ var number_of_straights: int
 var number_of_rights: int
 var number_of_lefts: int
 
-var track_lenght: int = 30
+var track_lenght: int = 10
 var bg_vert_move: float
 
 var countdown: int = 4
@@ -78,7 +81,6 @@ func _physics_process(delta):
 		countdown = 4
 		Hud.game_started = true
 		%Timer.start()
-
 
 func raise_the_speed():
 	animation_player.speed_scale += .025
@@ -193,6 +195,10 @@ func scale_text():
 	tween.tween_property(Hud.countdown, "scale", Vector2(1,1), .001)
 
 func show_score():
+	var tween = get_tree().create_tween().set_parallel()
+	tween.tween_property(texture_rect, "modulate:a", 0.0, 2)
+	tween.tween_property(sprite_2d, "modulate:a", 0.0, 2)
+	tween.chain().tween_property(swimmer, "modulate:a", 1.0, 3)
 	emit_signal("final_score")
 
 func zoom_camera():
@@ -208,9 +214,13 @@ func reset_game(): #all the default states
 	number_of_lefts = 0
 	number_of_straights = 0
 	speed = speed_base
-	Hud.speed_txt.text = "00 km/h"
+	Hud.speed_txt.text = "00.00 km/h"
 	Hud.game_started = false
 	texture_rect.position.y = start_y_position_of_texture
+	var tween = get_tree().create_tween().set_parallel()
+	tween.tween_property(texture_rect, "modulate:a", 1.0, 1)
+	tween.tween_property(sprite_2d, "modulate:a", 1.0, 1)
+	tween.tween_property(swimmer, "modulate:a", 0.0, 1)
 	
 
 func straight_zone_speed(): #turn on speed and slow zones for straight tube
