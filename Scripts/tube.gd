@@ -198,7 +198,7 @@ func show_score():
 	var tween = get_tree().create_tween().set_parallel()
 	tween.tween_property(texture_rect, "modulate:a", 0.0, 2)
 	tween.tween_property(sprite_2d, "modulate:a", 0.0, 2)
-	tween.chain().tween_property(swimmer, "modulate:a", 1.0, 3)
+	tween.chain().tween_property(swimmer, "modulate:a", 1.0, 2)
 	emit_signal("final_score")
 
 func zoom_camera():
