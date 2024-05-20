@@ -8,6 +8,8 @@ extends Area2D
 # I will count all animations and will set the finite number for race
 # once I reach that number, straight animation is set with last 5 loops followed by an end animation - fall into the pool
 # final stats continues and hopefully some online leaderboard
+@onready var count_sound = %count_sound
+@onready var count_go = %count_go
 
 @onready var swimmer = %swimmer
 
@@ -17,8 +19,10 @@ var end_y_position_of_texture: float = -362
 var end_x_position_of_texture: float = -213
 var start_y_position_of_texture: float = -109
 
-
-
+signal stop_play_game_sound
+signal play_game_sound
+signal stop_stats_song
+signal end_tunes_on
 signal show_feet
 signal race_start
 signal stop_time
@@ -39,7 +43,7 @@ var number_of_straights: int
 var number_of_rights: int
 var number_of_lefts: int
 
-var track_lenght: int = 10
+var track_lenght: int = 30
 var bg_vert_move: float
 
 var countdown: int = 4
@@ -55,6 +59,7 @@ func vertical_movement_of_bg():
 	print(bg_vert_move)
 
 func _ready():
+	Hud.control.visible = true
 	texture_rect.position.y = start_y_position_of_texture
 	texture_rect.position.x = end_x_position_of_texture
 	vertical_movement_of_bg()
@@ -135,6 +140,9 @@ func finish_sequence():
 	animation_player.speed_scale = 1
 	animation_player.play("end_line")
 	animation_player.play("end_animation")
+	emit_signal("end_tunes_on")
+	emit_signal("stop_play_game_sound")
+
 
 func go_animation(): #entry animation followed by script change_piece()
 	animation_player.play("go")
@@ -177,14 +185,18 @@ func change_piece(): #randomly change the animation
 
 func _on_timer_timeout():
 	if countdown > 1:
+		Hud.control.visible = false
 		Hud.countdown.visible = true
 		scale_text()
 		Hud.countdown.text = str(countdown - 1)
+		count_sound.play()
 	elif countdown == 1:
 		scale_text()
+		count_go.play()
 		Hud.countdown.text = "GO!"
 		go_animation()
 		emit_signal("race_start")
+		emit_signal("play_game_sound")
 	else:
 		Hud.countdown.visible = false
 	countdown -= 1
@@ -216,6 +228,8 @@ func reset_game(): #all the default states
 	speed = speed_base
 	Hud.speed_txt.text = "00.00 km/h"
 	Hud.game_started = false
+	Hud.control.visible = true
+	emit_signal("stop_stats_song")
 	texture_rect.position.y = start_y_position_of_texture
 	var tween = get_tree().create_tween().set_parallel()
 	tween.tween_property(texture_rect, "modulate:a", 1.0, 1)

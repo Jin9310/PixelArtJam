@@ -7,6 +7,30 @@
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_nfrbp")
 
+[node name="Control" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="start" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -166.0
+offset_right = 166.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_cv4ba")
+text = "- press [SPACE] to start - "
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="countDown" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 3
@@ -143,9 +167,27 @@ theme_override_fonts/font = ExtResource("2_cv4ba")
 theme_override_font_sizes/font_size = 16
 text = "0 km/h"
 
+[node name="MarginContainer2" type="MarginContainer" parent="timers"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 129.0
+offset_right = 196.0
+offset_bottom = 129.0
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="timers/MarginContainer2"]
+layout_mode = 2
+
+[node name="my_best_time" type="Label" parent="timers/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_cv4ba")
+text = "Best: 00 00 00s"
+
 [node name="end_game_stats" type="Control" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -168,12 +210,30 @@ theme_override_constants/margin_bottom = 100
 [node name="VBoxContainer" type="VBoxContainer" parent="end_game_stats/MarginContainer"]
 layout_mode = 2
 
+[node name="new_best_score" type="Label" parent="end_game_stats/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_cv4ba")
+theme_override_font_sizes/font_size = 24
+text = "New best score!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="final_time" type="Label" parent="end_game_stats/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_cv4ba")
 text = "Time: 00 00 00s"
+
+[node name="best_time" type="Label" parent="end_game_stats/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_cv4ba")
+text = "Best: 00 00 00s"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="play_again_btn" type="Button" parent="end_game_stats/MarginContainer/VBoxContainer"]
 layout_mode = 2

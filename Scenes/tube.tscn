@@ -1,9 +1,11 @@
-[gd_scene load_steps=29 format=3 uid="uid://dn4vv12beq3p8"]
+[gd_scene load_steps=31 format=3 uid="uid://dn4vv12beq3p8"]
 
 [ext_resource type="Script" path="res://Scripts/tube.gd" id="1_cxya7"]
 [ext_resource type="Texture2D" uid="uid://cu7hvb167neyt" path="res://Art/SourceFiles/new_slide-Sheet.png" id="2_ro0xt"]
 [ext_resource type="Texture2D" uid="uid://bmrlo5kxufiq4" path="res://Art/game_pool.png" id="3_548it"]
 [ext_resource type="Texture2D" uid="uid://b2qjo6m4jgbtr" path="res://Art/SourceFiles/swimming-Sheet.png" id="4_axlnn"]
+[ext_resource type="AudioStream" uid="uid://b5u65f4mxq5rs" path="res://Music/countdown_singles.wav" id="5_2518u"]
+[ext_resource type="AudioStream" uid="uid://1ohd0ccgylo8" path="res://Music/countdown_go.wav" id="6_48vgs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6t8je"]
 size = Vector2(50, 40)
@@ -382,6 +384,21 @@ size = Vector2(2, 2)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ugq6x"]
 size = Vector2(2, 2)
 
+[sub_resource type="Animation" id="Animation_pkpoq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_th6mb"]
 resource_name = "idle"
 length = 0.8
@@ -397,21 +414,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-
-[sub_resource type="Animation" id="Animation_pkpoq"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_in78p"]
@@ -543,6 +545,15 @@ libraries = {
 "": SubResource("AnimationLibrary_in78p")
 }
 autoplay = "idle"
+
+[node name="count_sound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("5_2518u")
+bus = &"Music"
+
+[node name="count_go" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("6_48vgs")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="speed_up_straight" to="." method="_on_speed_up_straight_body_entered"]

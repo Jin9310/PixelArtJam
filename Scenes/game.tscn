@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cpemyiy6wsitj"]
+[gd_scene load_steps=16 format=3 uid="uid://cpemyiy6wsitj"]
 
 [ext_resource type="PackedScene" uid="uid://dn4vv12beq3p8" path="res://Scenes/tube.tscn" id="1_gvddc"]
 [ext_resource type="Script" path="res://Scenes/game.gd" id="1_nx7pc"]
@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://o0ovihxd8giw" path="res://Art/main_scene-Sheet.png" id="3_oyhds"]
 [ext_resource type="Texture2D" uid="uid://bo4v257fu2ba3" path="res://Art/tube_name.png" id="4_tfkl3"]
 [ext_resource type="Texture2D" uid="uid://d4mihq0dnpm4j" path="res://Art/runners_name.png" id="5_4sgi4"]
+[ext_resource type="AudioStream" uid="uid://k626oy6r12v7" path="res://Music/01_entry_screen_sound.wav" id="10_few7n"]
+[ext_resource type="AudioStream" uid="uid://yffgov4lb8gb" path="res://Music/02_entry_screen_sound.wav" id="11_kgpjx"]
+[ext_resource type="AudioStream" uid="uid://4y7exdtyxujg" path="res://Music/game_play.wav" id="12_mblwd"]
 
 [sub_resource type="Animation" id="Animation_y4rkt"]
 length = 0.001
@@ -194,5 +197,21 @@ unique_name_in_owner = true
 wait_time = 3.0
 autostart = true
 
+[node name="MusicMainMenu" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_few7n")
+autoplay = true
+bus = &"Music"
+
+[node name="EndStats" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_kgpjx")
+bus = &"Music"
+
+[node name="play_game_snd" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_mblwd")
+bus = &"Music"
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
+[connection signal="finished" from="MusicMainMenu" to="." method="_on_music_main_menu_finished"]
+[connection signal="finished" from="EndStats" to="." method="_on_end_stats_finished"]
+[connection signal="finished" from="play_game_snd" to="." method="_on_play_game_snd_finished"]
